@@ -158,7 +158,7 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 **Done:** Phase 0 docs + Phase 1 backend + Phase 2 frontend on `main`.
 
-**Now / next:** `db/schema` applied → `db/client`.
+**Now / next:** `db/client` merged → `db/sync`.
 
 **Open:** LLM keys on Vercel if not already; local `.env` / `.env.local` for Anthropic or OpenAI.
 
