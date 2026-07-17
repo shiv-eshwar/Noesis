@@ -12,11 +12,7 @@ export function AuthButton() {
   const [busy, setBusy] = useState(false);
 
   const anonymous = isAnonymousUser(user);
-  const label = loading
-    ? "…"
-    : !user || anonymous
-      ? "Sign in"
-      : user.email?.split("@")[0] ?? "Account";
+  const signedIn = Boolean(user && !anonymous);
 
   const onSignOut = async () => {
     setBusy(true);
@@ -26,23 +22,24 @@ export function AuthButton() {
 
   return (
     <>
-      {!user || anonymous ? (
+      {!signedIn ? (
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="ui text-sm text-ink-mute hover:text-ink-soft transition-colors"
+          disabled={loading}
+          className="ui text-sm text-ink-mute hover:text-ink-soft transition-colors disabled:opacity-40"
         >
-          {label}
+          {loading ? "…" : "Sign in"}
         </button>
       ) : (
         <button
           type="button"
           onClick={onSignOut}
           disabled={busy}
-          title={user.email ?? "Sign out"}
+          title="Sign out"
           className="ui text-sm text-ink-mute hover:text-ink-soft transition-colors disabled:opacity-40"
         >
-          {busy ? "…" : "Sign out"}
+          {busy ? "…" : user?.email ?? "Sign out"}
         </button>
       )}
       <AuthModal open={open} onClose={() => setOpen(false)} />

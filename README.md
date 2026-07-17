@@ -104,7 +104,7 @@ The system prompt is the product. Voice, banned clichés, spiral rules, and JSON
 | Client state | Zustand · localStorage (v1) |
 | LLM | Anthropic (preferred) · OpenAI fallback |
 | Hosting | [Vercel](https://vercel.com) · project `noesis` |
-| Data / auth (later) | [Supabase](https://supabase.com) · project **Noesis** |
+| Data / auth | [Supabase](https://supabase.com) · project **Noesis** (anon + optional email) |
 
 Repo: [github.com/shiv-eshwar/Noesis](https://github.com/shiv-eshwar/Noesis)
 
@@ -129,11 +129,21 @@ Create `.env.local` (never commit secrets):
 ANTHROPIC_API_KEY=sk-ant-...
 # OPENAI_API_KEY=sk-...
 
-# Supabase (already provisioned for later persistence)
+# Supabase (journey persistence + optional email magic link)
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 # SUPABASE_SERVICE_ROLE_KEY=...   # server only
 ```
+
+Sign-in is optional. Learning works anonymously. Email magic link upgrades the anonymous user in place so journey rows stay owned.
+
+**Auth redirect URLs** (Supabase Dashboard → Authentication → URL configuration):
+
+| URL | Role |
+|-----|------|
+| `http://localhost:3000` | Local Site / redirect |
+| `https://noesis-shiv-shahs-projects.vercel.app` | Production Site URL + redirect |
+| Preview `*.vercel.app` hosts | Allow-listed for PR previews |
 
 ### 3. Develop
 

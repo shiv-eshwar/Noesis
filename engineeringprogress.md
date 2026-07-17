@@ -42,7 +42,7 @@ Source of product truth: `WHAT-THIS-IS.md`. Source of “what exists”: `BUILT.
 | Default branch `main` | ✅ | Was `master`; aligned with Vercel |
 | `.env.example` tracked | ✅ | Secrets stay gitignored via `.env*` + `!.env.example` |
 | LLM keys in `.env.local` | ⬜ | Need `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` for full generation |
-| Supabase journeys + anon auth | ✅ | Table + RLS; `signInAnonymously` enabled |
+| Supabase journeys + anon auth | ✅ | Table + RLS; anon + email magic-link upgrade |
 | LLM keys on Vercel | ⬜ | Add before production smoke tests |
 
 ---
@@ -158,19 +158,31 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 ---
 
-## Phase 4 — Auth
+## Phase 4 — Auth ✅
 
-- [ ] Supabase Auth (or equivalent) for multi-device journeys
-- [ ] Wire session to persisted journeys
-- [ ] Never require auth for a first local learning loop unless product demands it
+Optional email magic link. Anonymous learning still works without signing in.
+
+### Branch plan
+
+| Order | Branch | Scope | Status |
+|-------|--------|-------|--------|
+| 1 | `auth/session` | Auth helpers + store; journey-sync session-aware | ✅ |
+| 2 | `auth/ui` | AuthButton + AuthModal in top-controls | ✅ |
+| 3 | `auth/upgrade` | Anonymous→email in place; Supabase redirect URLs | ✅ |
+
+### Auth todos
+
+- [x] Supabase Auth email magic link for multi-device / durable identity
+- [x] Wire session to persisted journeys (same `auth.uid()` after upgrade)
+- [x] Never require auth for a first local learning loop
 
 ---
 
 ## Latest focus
 
-**Done:** Phase 0–3 on `main` (docs, backend, frontend, database sync).
+**Done:** Phase 0–4 on `main` (docs, backend, frontend, database, optional auth).
 
-**Now / next:** `auth/ui` merged → `auth/upgrade`.
+**Now / next:** Product polish / LLM keys for full generation smoke tests.
 
 **Open:** LLM keys on Vercel if not already; local `.env` / `.env.local` for Anthropic or OpenAI.
 
@@ -185,4 +197,5 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 ---
 
-*Last updated: 2026-07-18 — Phase 3 database complete.*
+*Last updated: 2026-07-18 — Phase 4 auth complete.*
+

@@ -68,20 +68,27 @@ export async function requestEmailUpgrade(email: string): Promise<{ ok: boolean;
       : undefined;
 
   if (isAnonymousUser(user)) {
+    // Convert anonymous → email in place so journeys stay on the same user id.
     const { error } = await supabase.auth.updateUser(
       { email: trimmed },
       redirectTo ? { emailRedirectTo: redirectTo } : undefined,
     );
-    if (error) {
+    if (!error) {
+      return {
+        ok: true,
+        message: "Check your email to confirm. Your journey stays with this account.",
+      };
+    }
+    // Email already belongs to another account — magic-link into that identity.
+    const alreadyTaken =
+      /already|registered|exists|taken/i.test(error.message) ||
+      error.status === 422;
+    if (!alreadyTaken) {
       return { ok: false, message: error.message };
     }
-    return {
-      ok: true,
-      message: "Check your email to confirm. Your journey stays with this account.",
-    };
   }
 
-  // Already has an identity — send a magic link to sign in on this or another device.
+  // Permanent user, or recovering an existing email on another device.
   const { error } = await supabase.auth.signInWithOtp({
     email: trimmed,
     options: {
