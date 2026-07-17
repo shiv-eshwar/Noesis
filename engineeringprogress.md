@@ -1,6 +1,6 @@
 # Noesis — Engineering Progress
 
-Living checklist. Update this file whenever a slice lands or a todo changes.  
+Living checklist. **Update this file whenever a slice lands** — mark todos, refresh Latest focus, keep it honest.  
 Source of product truth: `WHAT-THIS-IS.md`. Source of “what exists”: `BUILT.md`.
 
 ---
@@ -10,8 +10,9 @@ Source of product truth: `WHAT-THIS-IS.md`. Source of “what exists”: `BUILT.
 1. **Docs before code** — product intent and progress stay current.
 2. **Reproduce, don’t invent** — behavior and API shapes come from the reference repomix; rename One Page → **Noesis**.
 3. **One concern at a time** — Backend → Frontend → Database → Auth.
-4. **One branch at a time** — each backend (then frontend) capability gets its own branch; merge/push when that slice is done.
+4. **One branch at a time** — each capability gets its own branch; merge/push when that slice is done.
 5. **Push when green** — no half-broken APIs on `main`.
+6. **Update this file on every merge** — check boxes, branch status, Latest focus, last-updated line.
 
 ### Locked decisions (Phase 1)
 
@@ -30,20 +31,22 @@ Source of product truth: `WHAT-THIS-IS.md`. Source of “what exists”: `BUILT.
 
 ---
 
-## Environment (done)
+## Environment
 
 | Item | Status | Notes |
 |------|--------|-------|
-| GitHub repo `shiv-eshwar/Noesis` | ✅ | Public; connected to Vercel |
-| Vercel project `noesis` | ✅ | Git linked; Supabase env vars set |
-| Supabase project `Noesis` | ✅ | Mumbai `ebtayigvsooxoqizjmsf`; local `.env.local` |
+| GitHub repo `shiv-eshwar/Noesis` | ✅ | https://github.com/shiv-eshwar/Noesis |
+| Vercel project `noesis` | ✅ | Git linked to `main`; Supabase env vars set |
+| Supabase project `Noesis` | ✅ | Mumbai `ebtayigvsooxoqizjmsf` |
 | Local folder linked | ✅ | `.vercel/`, supabase link, git `origin` |
-| Default branch `main` | ✅ | Aligned with Vercel production branch |
-| LLM keys on Vercel | ⬜ | Add `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` before backend smoke tests in prod |
+| Default branch `main` | ✅ | Was `master`; aligned with Vercel |
+| `.env.example` tracked | ✅ | Secrets stay gitignored via `.env*` + `!.env.example` |
+| LLM keys in `.env.local` | ⬜ | Need `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` for full generation |
+| LLM keys on Vercel | ⬜ | Add before production smoke tests |
 
 ---
 
-## Phase 0 — Documentation
+## Phase 0 — Documentation ✅
 
 | Task | Status |
 |------|--------|
@@ -52,63 +55,75 @@ Source of product truth: `WHAT-THIS-IS.md`. Source of “what exists”: `BUILT.
 | `engineeringprogress.md` (this file) | ✅ |
 | `BUILT.md` (what actually exists) | ✅ |
 | Commit docs to `main` | ✅ |
-| Default branch `main` (align with Vercel production branch) | ✅ |
+| Default branch `main` | ✅ |
 
 ---
 
-## Phase 1 — Backend (complete)
+## Phase 1 — Backend ✅
 
-Reproduce server surface from the reference. **No UI yet.**  
-Work **one branch at a time**, then merge to `main` and push.
+Reproduce server surface from the reference. **No product UI.** Merged to `main`.
 
 ### Branch plan
 
-| Order | Branch | Scope | Done when | Status |
-|-------|--------|-------|-----------|--------|
-| 1 | `backend/foundation` | Next app shell + `lib/types`, `depth`, `llm`, `prompts` (Noesis) | `npm run build` green | ✅ |
-| 2 | `backend/api-layer` | `POST /api/layer` + quiz normalize/policy | curl returns `Layer` | ✅ |
-| 3 | `backend/api-revise` | `POST /api/layer/revise` | curl revises layer | ✅ |
-| 4 | `backend/api-placement` | `POST /api/placement` + `placement-parse` | curl returns questions | ✅ |
-| 5 | `backend/api-quiz` | `POST /api/quiz` + grading libs | curl grades items | ✅ |
-| 6 | `backend/api-chat` | `POST /api/chat` | curl returns chat reply | ✅ |
+| Order | Branch | Scope | Status |
+|-------|--------|-------|--------|
+| 1 | `backend/foundation` | Next.js shell + `lib/types`, `depth`, `llm`, `prompts`, `quiz-policy` (Noesis voice) | ✅ Merged |
+| 2 | `backend/api-layer` | `POST /api/layer` + `quiz-normalize` | ✅ Merged |
+| 3 | `backend/api-revise` | `POST /api/layer/revise` | ✅ Merged |
+| 4 | `backend/api-placement` | `POST /api/placement` + `placement-parse` | ✅ Merged |
+| 5 | `backend/api-quiz` | `POST /api/quiz` + `quiz-grade` / `quiz-grade-local` | ✅ Merged |
+| 6 | `backend/api-chat` | `POST /api/chat` | ✅ Merged |
 
-### Backend todos (checklist)
+### Backend todos
 
 - [x] Scaffold minimal Next.js app (App Router) — API-focused; no full UI
 - [x] Port `lib/types.ts`, `lib/depth.ts`
 - [x] Port `lib/llm.ts`, `lib/prompts.ts` (brand voice → Noesis)
-- [x] Port quiz helpers used by APIs (`quiz-normalize`, `quiz-policy` for layer)
+- [x] Port quiz helpers (`quiz-normalize`, `quiz-policy`, `quiz-grade`, `quiz-grade-local`)
+- [x] Port `lib/placement-parse.ts`
 - [x] `POST /api/layer`
 - [x] `POST /api/layer/revise`
-- [x] `POST /api/placement` (+ parse as in reference)
+- [x] `POST /api/placement`
 - [x] `POST /api/quiz`
 - [x] `POST /api/chat`
-- [x] Local smoke tests (curl) for each route (validation + missing-key path; LLM key still needed for full generation)
-- [ ] LLM keys in `.env.local` + Vercel
-- [x] Update `BUILT.md` after each merged branch
+- [x] `npm run build` green with all five routes
+- [x] Local smoke tests (curl): validation, missing-key path; `/api/quiz` local grading OK
+- [x] `.env.example` for LLM setup
+- [x] Update `BUILT.md` after merges
+- [ ] Add LLM keys to `.env.local` + Vercel (unblocks full Layer generation)
 
-### Backend out of scope (this phase)
+### Routes live on `main`
 
-- React reader / landing / quiz UI
-- Zustand stores
-- Gaze / MediaPipe
-- Supabase tables / Auth
+| Route | File |
+|-------|------|
+| `POST /api/layer` | `app/api/layer/route.ts` |
+| `POST /api/layer/revise` | `app/api/layer/revise/route.ts` |
+| `POST /api/placement` | `app/api/placement/route.ts` |
+| `POST /api/quiz` | `app/api/quiz/route.ts` |
+| `POST /api/chat` | `app/api/chat/route.ts` |
+
+### Backend out of scope (deferred)
+
+- React reader / landing / quiz UI → Phase 2
+- Zustand stores → Phase 2
+- Gaze / MediaPipe → Phase 2
+- Supabase tables / Auth → Phases 3–4
 
 ---
 
-## Phase 2 — Frontend
+## Phase 2 — Frontend (next)
 
-Consume backend contracts only. Rename orchestrator to Noesis.
+Consume backend contracts only. Orchestrator branded **Noesis**.
 
-### Branch plan (draft — refine when Phase 1 finishes)
+### Branch plan
 
-| Order | Branch | Scope |
-|-------|--------|-------|
-| 1 | `frontend/shell` | Layout, fonts, globals, theme, landing |
-| 2 | `frontend/journey` | Zustand journey store + orchestrator |
-| 3 | `frontend/reader-quiz` | Reader, quiz modal, depth rail, revise flow |
-| 4 | `frontend/placement-chat` | Placement + questions panel + selection |
-| 5 | `frontend/gaze-optional` | Opt-in camera / hand gestures |
+| Order | Branch | Scope | Status |
+|-------|--------|-------|--------|
+| 1 | `frontend/shell` | Layout, fonts, globals, theme, landing | ⬜ |
+| 2 | `frontend/journey` | Zustand journey store + orchestrator | ⬜ |
+| 3 | `frontend/reader-quiz` | Reader, quiz modal, depth rail, revise flow | ⬜ |
+| 4 | `frontend/placement-chat` | Placement + questions panel + selection | ⬜ |
+| 5 | `frontend/gaze-optional` | Opt-in camera / hand gestures | ⬜ |
 
 ### Frontend todos
 
@@ -117,7 +132,7 @@ Consume backend contracts only. Rename orchestrator to Noesis.
 - [ ] Depth rail + text evolution motion
 - [ ] Placement path
 - [ ] Questions on selection
-- [ ] localStorage persistence
+- [ ] localStorage persistence (`noesis:journey`)
 - [ ] Polish: light/dark, motion timing
 
 ---
@@ -140,19 +155,21 @@ Consume backend contracts only. Rename orchestrator to Noesis.
 
 ## Latest focus
 
-**Now:** Phase 1 backend complete on `main`. Next: Phase 2 frontend when ready.
+**Done:** Phase 0 docs + Phase 1 backend — all five APIs on `main` (Next.js).
 
-**Do not start:** Frontend UI, database migrations, or auth until Phase 1 backend contracts are merged and smoke-tested.
+**Now / next:** Phase 2 frontend (`frontend/shell` first), after LLM keys are added for real generation smoke tests.
+
+**Open blocker:** No `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` in `.env.local` or Vercel yet — routes return the expected missing-key error until keys are set.
 
 ---
 
 ## Notes for agents / contributors
 
-- Prefer the reference repomix file over inventing new endpoints or prompt philosophy.
-- Brand: **Noesis** everywhere user-facing and in docs; Vercel project name remains `noesis` (platform lowercase).
+- Prefer the reference repomix over inventing new endpoints or prompt philosophy.
+- Brand: **Noesis** everywhere user-facing; Vercel project name remains `noesis`.
 - Keep this file honest: check boxes only when merged and verified.
-- After each branch merge: update `BUILT.md` and this Latest focus section.
+- **After every completed task or branch merge:** update this file and `BUILT.md`.
 
 ---
 
-*Last updated: 2026-07-18 — Phase 0 documentation.*
+*Last updated: 2026-07-18 — Phase 1 backend complete; Phase 2 next.*
