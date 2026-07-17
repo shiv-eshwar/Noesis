@@ -158,7 +158,7 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 **Done:** Phase 0 docs + Phase 1 backend + Phase 2 frontend on `main`.
 
-**Now / next:** Phase 3 database (Supabase journeys) when ready. Ensure LLM keys are set for full generation.
+**Now / next:** `db/schema` applied → `db/client`.
 
 **Open:** LLM keys on Vercel if not already; local `.env` / `.env.local` for Anthropic or OpenAI.
 
