@@ -41,7 +41,7 @@ A single, serif-led page that teaches one topic at a time, deepening as you prov
 | Next.js 16 app shell | ✅ |
 | Backend libs (`types`, `depth`, `llm`, `prompts`) | ✅ |
 | Backend API routes | ✅ All five reference routes |
-| Frontend UI | 🚧 Shell: Landing + theme |
+| Frontend UI | 🚧 Shell + Noesis orchestrator |
 | Database schema | ⬜ Not started (project only) |
 | Auth | ⬜ Not started |
 
@@ -147,6 +147,7 @@ Exercise each `POST /api/*` route before building UI.
 | 2026-07-18 | Infra: GitHub, Vercel, Supabase for Noesis |
 | 2026-07-18 | Docs: `README.md`, `WHAT-THIS-IS.md`, `engineeringprogress.md`, `BUILT.md` |
 | 2026-07-18 | Default branch renamed `master` → `main`; locked Phase 1 decisions recorded |
+| 2026-07-18 | `frontend/journey`: Noesis orchestrator + API wiring |
 | 2026-07-18 | `frontend/shell`: Landing, theme, store (`noesis:journey`) |
 | 2026-07-18 | `backend/api-chat`: `POST /api/chat` — Phase 1 backend complete |
 | 2026-07-18 | `backend/api-quiz`: `POST /api/quiz` + grading |
