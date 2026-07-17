@@ -69,7 +69,7 @@ Work **one branch at a time**, then merge to `main` and push.
 | 2 | `backend/api-layer` | `POST /api/layer` + quiz normalize/policy | curl returns `Layer` | ✅ |
 | 3 | `backend/api-revise` | `POST /api/layer/revise` | curl revises layer | ✅ |
 | 4 | `backend/api-placement` | `POST /api/placement` + `placement-parse` | curl returns questions | ✅ |
-| 5 | `backend/api-quiz` | `POST /api/quiz` + grading libs | curl grades items | ⬜ |
+| 5 | `backend/api-quiz` | `POST /api/quiz` + grading libs | curl grades items | ✅ |
 | 6 | `backend/api-chat` | `POST /api/chat` | curl returns chat reply | ⬜ |
 
 ### Backend todos (checklist)
@@ -81,7 +81,7 @@ Work **one branch at a time**, then merge to `main` and push.
 - [x] `POST /api/layer`
 - [x] `POST /api/layer/revise`
 - [x] `POST /api/placement` (+ parse as in reference)
-- [ ] `POST /api/quiz`
+- [x] `POST /api/quiz`
 - [ ] `POST /api/chat`
 - [ ] Local smoke tests (curl) for each route
 - [ ] LLM keys in `.env.local` + Vercel
@@ -140,7 +140,7 @@ Consume backend contracts only. Rename orchestrator to Noesis.
 
 ## Latest focus
 
-**Now:** `backend/api-placement` merged → next `backend/api-quiz`.
+**Now:** `backend/api-quiz` merged → next `backend/api-chat`.
 
 **Do not start:** Frontend UI, database migrations, or auth until Phase 1 backend contracts are merged and smoke-tested.
 
