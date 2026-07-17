@@ -56,36 +56,36 @@ Source of product truth: `WHAT-THIS-IS.md`. Source of “what exists”: `BUILT.
 
 ---
 
-## Phase 1 — Backend (next)
+## Phase 1 — Backend (in progress)
 
 Reproduce server surface from the reference. **No UI yet.**  
 Work **one branch at a time**, then merge to `main` and push.
 
 ### Branch plan
 
-| Order | Branch | Scope | Done when |
-|-------|--------|-------|-----------|
-| 1 | `backend/foundation` | Next app shell (minimal), `lib/types`, `lib/depth`, `lib/llm`, `lib/prompts` (Noesis-named), env wiring | Can call LLM helpers in isolation; types + depth resolve |
-| 2 | `backend/api-layer` | `POST /api/layer` + quiz normalize/policy | Returns a valid `Layer` JSON for a topic |
-| 3 | `backend/api-revise` | `POST /api/layer/revise` | Rewrites layer from missed questions |
-| 4 | `backend/api-placement` | `POST /api/placement` + `placement-parse` / score helpers as needed | Returns placement questions |
-| 5 | `backend/api-quiz` | `POST /api/quiz` + grading libs | Grades short-answer items |
-| 6 | `backend/api-chat` | `POST /api/chat` | Returns chat reply with topic/layer context |
+| Order | Branch | Scope | Done when | Status |
+|-------|--------|-------|-----------|--------|
+| 1 | `backend/foundation` | Next app shell + `lib/types`, `depth`, `llm`, `prompts` (Noesis) | `npm run build` green | ✅ |
+| 2 | `backend/api-layer` | `POST /api/layer` + quiz normalize/policy | curl returns `Layer` | ⬜ |
+| 3 | `backend/api-revise` | `POST /api/layer/revise` | curl revises layer | ⬜ |
+| 4 | `backend/api-placement` | `POST /api/placement` + `placement-parse` | curl returns questions | ⬜ |
+| 5 | `backend/api-quiz` | `POST /api/quiz` + grading libs | curl grades items | ⬜ |
+| 6 | `backend/api-chat` | `POST /api/chat` | curl returns chat reply | ⬜ |
 
 ### Backend todos (checklist)
 
-- [ ] Scaffold minimal Next.js app (App Router) — API-focused; no full UI
-- [ ] Port `lib/types.ts`, `lib/depth.ts`
-- [ ] Port `lib/llm.ts`, `lib/prompts.ts` (brand voice → Noesis)
+- [x] Scaffold minimal Next.js app (App Router) — API-focused; no full UI
+- [x] Port `lib/types.ts`, `lib/depth.ts`
+- [x] Port `lib/llm.ts`, `lib/prompts.ts` (brand voice → Noesis)
 - [ ] Port quiz helpers used by APIs (`quiz-normalize`, `quiz-policy`, grade libs)
 - [ ] `POST /api/layer`
 - [ ] `POST /api/layer/revise`
-- [ ] `POST /api/placement` (+ parse/score as in reference)
+- [ ] `POST /api/placement` (+ parse as in reference)
 - [ ] `POST /api/quiz`
 - [ ] `POST /api/chat`
 - [ ] Local smoke tests (curl) for each route
 - [ ] LLM keys in `.env.local` + Vercel
-- [ ] Update `BUILT.md` after each merged branch
+- [x] Update `BUILT.md` after each merged branch
 
 ### Backend out of scope (this phase)
 
@@ -140,7 +140,7 @@ Consume backend contracts only. Rename orchestrator to Noesis.
 
 ## Latest focus
 
-**Now:** Phase 0 complete on `main` → start `backend/foundation`.
+**Now:** `backend/foundation` merged → next `backend/api-layer`.
 
 **Do not start:** Frontend UI, database migrations, or auth until Phase 1 backend contracts are merged and smoke-tested.
 
