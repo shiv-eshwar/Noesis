@@ -145,6 +145,7 @@ Exercise each `POST /api/*` route before building UI.
 |------|-------------|
 | 2026-07-18 | Infra: GitHub, Vercel, Supabase for Noesis |
 | 2026-07-18 | Docs: `README.md`, `WHAT-THIS-IS.md`, `engineeringprogress.md`, `BUILT.md` |
+| 2026-07-18 | Default branch renamed `master` → `main`; locked Phase 1 decisions recorded |
 
 ---
 

@@ -13,6 +13,21 @@ Source of product truth: `WHAT-THIS-IS.md`. Source of “what exists”: `BUILT.
 4. **One branch at a time** — each backend (then frontend) capability gets its own branch; merge/push when that slice is done.
 5. **Push when green** — no half-broken APIs on `main`.
 
+### Locked decisions (Phase 1)
+
+- Default branch: **`main`**
+- Framework: **Next.js App Router** for everything (`app/api` = backend)
+- Only five reference routes — no invented endpoints
+- Brand voice → **Noesis**; paths stay `/api/layer`, etc.
+- Keep 40-layer depth rail
+- Cadence + placement scoring stay client-side (later)
+- Grading: LLM + local fallback
+- Chat last among backend routes
+- LLM: both wired; Anthropic preferred
+- Supabase/Auth ignored in Phase 1
+- Done bar: `npm run build` + curl
+- Package name `noesis`; later UI `Noesis.tsx` / `noesis:journey`
+
 ---
 
 ## Environment (done)
@@ -23,11 +38,12 @@ Source of product truth: `WHAT-THIS-IS.md`. Source of “what exists”: `BUILT.
 | Vercel project `noesis` | ✅ | Git linked; Supabase env vars set |
 | Supabase project `Noesis` | ✅ | Mumbai `ebtayigvsooxoqizjmsf`; local `.env.local` |
 | Local folder linked | ✅ | `.vercel/`, supabase link, git `origin` |
+| Default branch `main` | ✅ | Aligned with Vercel production branch |
 | LLM keys on Vercel | ⬜ | Add `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` before backend smoke tests in prod |
 
 ---
 
-## Phase 0 — Documentation (current)
+## Phase 0 — Documentation
 
 | Task | Status |
 |------|--------|
@@ -35,8 +51,8 @@ Source of product truth: `WHAT-THIS-IS.md`. Source of “what exists”: `BUILT.
 | `WHAT-THIS-IS.md` (product law) | ✅ |
 | `engineeringprogress.md` (this file) | ✅ |
 | `BUILT.md` (what actually exists) | ✅ |
-| Commit docs to `main` | ⬜ |
-| Default branch `main` (align with Vercel production branch) | ⬜ |
+| Commit docs to `main` | ✅ |
+| Default branch `main` (align with Vercel production branch) | ✅ |
 
 ---
 
@@ -124,7 +140,7 @@ Consume backend contracts only. Rename orchestrator to Noesis.
 
 ## Latest focus
 
-**Now:** Phase 0 docs complete → commit to `main` → start `backend/foundation`.
+**Now:** Phase 0 complete on `main` → start `backend/foundation`.
 
 **Do not start:** Frontend UI, database migrations, or auth until Phase 1 backend contracts are merged and smoke-tested.
 
