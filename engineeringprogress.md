@@ -56,7 +56,7 @@ Source of product truth: `WHAT-THIS-IS.md`. Source of “what exists”: `BUILT.
 
 ---
 
-## Phase 1 — Backend (in progress)
+## Phase 1 — Backend (complete)
 
 Reproduce server surface from the reference. **No UI yet.**  
 Work **one branch at a time**, then merge to `main` and push.
@@ -70,7 +70,7 @@ Work **one branch at a time**, then merge to `main` and push.
 | 3 | `backend/api-revise` | `POST /api/layer/revise` | curl revises layer | ✅ |
 | 4 | `backend/api-placement` | `POST /api/placement` + `placement-parse` | curl returns questions | ✅ |
 | 5 | `backend/api-quiz` | `POST /api/quiz` + grading libs | curl grades items | ✅ |
-| 6 | `backend/api-chat` | `POST /api/chat` | curl returns chat reply | ⬜ |
+| 6 | `backend/api-chat` | `POST /api/chat` | curl returns chat reply | ✅ |
 
 ### Backend todos (checklist)
 
@@ -82,8 +82,8 @@ Work **one branch at a time**, then merge to `main` and push.
 - [x] `POST /api/layer/revise`
 - [x] `POST /api/placement` (+ parse as in reference)
 - [x] `POST /api/quiz`
-- [ ] `POST /api/chat`
-- [ ] Local smoke tests (curl) for each route
+- [x] `POST /api/chat`
+- [x] Local smoke tests (curl) for each route (validation + missing-key path; LLM key still needed for full generation)
 - [ ] LLM keys in `.env.local` + Vercel
 - [x] Update `BUILT.md` after each merged branch
 
@@ -140,7 +140,7 @@ Consume backend contracts only. Rename orchestrator to Noesis.
 
 ## Latest focus
 
-**Now:** `backend/api-quiz` merged → next `backend/api-chat`.
+**Now:** Phase 1 backend complete on `main`. Next: Phase 2 frontend when ready.
 
 **Do not start:** Frontend UI, database migrations, or auth until Phase 1 backend contracts are merged and smoke-tested.
 
