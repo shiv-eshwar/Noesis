@@ -41,7 +41,7 @@ A single, serif-led page that teaches one topic at a time, deepening as you prov
 | Next.js 16 app shell | ✅ |
 | Backend libs (`types`, `depth`, `llm`, `prompts`) | ✅ |
 | Backend API routes | ✅ All five reference routes |
-| Frontend UI | 🚧 Reader, quiz, placement, chat |
+| Frontend UI | ✅ Full learning surface + optional gaze |
 | Database schema | ⬜ Not started (project only) |
 | Auth | ⬜ Not started |
 
@@ -147,6 +147,7 @@ Exercise each `POST /api/*` route before building UI.
 | 2026-07-18 | Infra: GitHub, Vercel, Supabase for Noesis |
 | 2026-07-18 | Docs: `README.md`, `WHAT-THIS-IS.md`, `engineeringprogress.md`, `BUILT.md` |
 | 2026-07-18 | Default branch renamed `master` → `main`; locked Phase 1 decisions recorded |
+| 2026-07-18 | `frontend/gaze-optional`: MediaPipe gaze/hand — Phase 2 complete |
 | 2026-07-18 | `frontend/placement-chat`: Placement + Questions panel |
 | 2026-07-18 | `frontend/reader-quiz`: Reader, DepthRail, Quiz, QuizModal |
 | 2026-07-18 | `frontend/journey`: Noesis orchestrator + API wiring |

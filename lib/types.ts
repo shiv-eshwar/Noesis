@@ -1,4 +1,4 @@
-// Shared types for the One Page learning surface.
+// Shared types for the Noesis learning surface.
 
 export type LayerKind =
   | "eli5"

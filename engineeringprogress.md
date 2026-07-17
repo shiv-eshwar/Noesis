@@ -104,14 +104,14 @@ Reproduce server surface from the reference. **No product UI.** Merged to `main`
 
 ### Backend out of scope (deferred)
 
-- React reader / landing / quiz UI → Phase 2
-- Zustand stores → Phase 2
-- Gaze / MediaPipe → Phase 2
+- React reader / landing / quiz UI → ✅ Phase 2
+- Zustand stores → ✅ Phase 2
+- Gaze / MediaPipe → ✅ Phase 2
 - Supabase tables / Auth → Phases 3–4
 
 ---
 
-## Phase 2 — Frontend (next)
+## Phase 2 — Frontend ✅
 
 Consume backend contracts only. Orchestrator branded **Noesis**.
 
@@ -123,7 +123,7 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 | 2 | `frontend/journey` | Zustand journey store + orchestrator | ✅ |
 | 3 | `frontend/reader-quiz` | Reader, quiz modal, depth rail, revise flow | ✅ |
 | 4 | `frontend/placement-chat` | Placement + questions panel + selection | ✅ |
-| 5 | `frontend/gaze-optional` | Opt-in camera / hand gestures | ⬜ |
+| 5 | `frontend/gaze-optional` | Opt-in camera / hand gestures | ✅ |
 
 ### Frontend todos
 
@@ -133,7 +133,8 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 - [x] Placement path
 - [x] Questions on selection
 - [x] localStorage persistence (`noesis:journey`)
-- [ ] Polish: light/dark, motion timing
+- [x] Polish: light/dark, motion timing
+- [x] Opt-in gaze / hand gestures (MediaPipe)
 
 ---
 
@@ -155,11 +156,11 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 ## Latest focus
 
-**Done:** Phase 0 docs + Phase 1 backend — all five APIs on `main` (Next.js).
+**Done:** Phase 0 docs + Phase 1 backend + Phase 2 frontend on `main`.
 
-**Now / next:** `frontend/placement-chat` merged → `frontend/gaze-optional`.
+**Now / next:** Phase 3 database (Supabase journeys) when ready. Ensure LLM keys are set for full generation.
 
-**Open blocker:** No `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` in `.env.local` or Vercel yet — routes return the expected missing-key error until keys are set.
+**Open:** LLM keys on Vercel if not already; local `.env` / `.env.local` for Anthropic or OpenAI.
 
 ---
 
@@ -172,4 +173,4 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 ---
 
-*Last updated: 2026-07-18 — frontend/placement-chat landed.*
+*Last updated: 2026-07-18 — Phase 2 frontend complete.*
