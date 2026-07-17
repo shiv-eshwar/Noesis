@@ -1,19 +1,46 @@
 "use client";
+
+import { AnimatePresence, motion } from "motion/react";
+import { PlacementQuiz } from "./PlacementQuiz";
 import type { PlacementQuestion } from "@/lib/types";
-export function PlacementModal({ open, topic, questions, onComplete }: {
-  open: boolean; topic: string; questions: PlacementQuestion[];
+
+interface PlacementModalProps {
+  open: boolean;
+  topic: string;
+  questions: PlacementQuestion[];
   onComplete: (selections: (number | null)[]) => void;
-}) {
-  if (!open) return null;
+}
+
+export function PlacementModal({
+  open,
+  topic,
+  questions,
+  onComplete,
+}: PlacementModalProps) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 p-4">
-      <div className="measure page-panel p-6 text-center">
-        <h2 className="display text-2xl mb-2">Placement</h2>
-        <p className="ui text-sm text-ink-mute mb-4">{topic} · {questions.length} questions</p>
-        <button type="button" className="ui border border-rule rounded px-4 py-2" onClick={() => onComplete(questions.map(() => null))}>
-          Skip placement (placeholder)
-        </button>
-      </div>
-    </div>
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          className="quiz-overlay"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Placement for ${topic}`}
+        >
+          <motion.div
+            className="quiz-modal placement-modal"
+            initial={{ opacity: 0, y: 16, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.98 }}
+            transition={{ duration: 0.28, ease: "easeOut" }}
+          >
+            <PlacementQuiz questions={questions} onComplete={onComplete} />
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
