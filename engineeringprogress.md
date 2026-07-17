@@ -42,6 +42,7 @@ Source of product truth: `WHAT-THIS-IS.md`. Source of “what exists”: `BUILT.
 | Default branch `main` | ✅ | Was `master`; aligned with Vercel |
 | `.env.example` tracked | ✅ | Secrets stay gitignored via `.env*` + `!.env.example` |
 | LLM keys in `.env.local` | ⬜ | Need `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` for full generation |
+| Supabase journeys + anon auth | ✅ | Table + RLS; `signInAnonymously` enabled |
 | LLM keys on Vercel | ⬜ | Add before production smoke tests |
 
 ---
@@ -138,11 +139,22 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 ---
 
-## Phase 3 — Database
+## Phase 3 — Database ✅
 
-- [ ] Schema for journeys / layer progress (Supabase)
-- [ ] Replace or sync localStorage with remote persistence
-- [ ] RLS policies appropriate to auth model
+### Branch plan
+
+| Order | Branch | Scope | Status |
+|-------|--------|-------|--------|
+| 1 | `db/schema` | `journeys` migration + RLS | ✅ |
+| 2 | `db/client` | Supabase browser client | ✅ |
+| 3 | `db/sync` | Anonymous auth + hydrate/upsert | ✅ |
+
+### Database todos
+
+- [x] Schema for journeys / layer progress (Supabase)
+- [x] Replace or sync localStorage with remote persistence (localStorage remains fallback)
+- [x] RLS policies (own rows via `auth.uid()`; anonymous auth enabled)
+- [x] Soft-fail sync — learning loop works offline
 
 ---
 
@@ -156,9 +168,9 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 ## Latest focus
 
-**Done:** Phase 0 docs + Phase 1 backend + Phase 2 frontend on `main`.
+**Done:** Phase 0–3 on `main` (docs, backend, frontend, database sync).
 
-**Now / next:** `db/client` merged → `db/sync`.
+**Now / next:** Phase 4 auth (upgrade anonymous → email/OAuth) when ready.
 
 **Open:** LLM keys on Vercel if not already; local `.env` / `.env.local` for Anthropic or OpenAI.
 
@@ -173,4 +185,4 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 ---
 
-*Last updated: 2026-07-18 — Phase 2 frontend complete.*
+*Last updated: 2026-07-18 — Phase 3 database complete.*

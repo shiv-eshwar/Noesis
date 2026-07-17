@@ -42,7 +42,7 @@ A single, serif-led page that teaches one topic at a time, deepening as you prov
 | Backend libs (`types`, `depth`, `llm`, `prompts`) | ✅ |
 | Backend API routes | ✅ All five reference routes |
 | Frontend UI | ✅ Full learning surface + optional gaze |
-| Database schema | 🚧 `journeys` table + RLS pushed |
+| Database schema | ✅ `journeys` + RLS + client sync |
 | Auth | ⬜ Not started |
 
 ---
@@ -147,6 +147,7 @@ Exercise each `POST /api/*` route before building UI.
 | 2026-07-18 | Infra: GitHub, Vercel, Supabase for Noesis |
 | 2026-07-18 | Docs: `README.md`, `WHAT-THIS-IS.md`, `engineeringprogress.md`, `BUILT.md` |
 | 2026-07-18 | Default branch renamed `master` → `main`; locked Phase 1 decisions recorded |
+| 2026-07-18 | `db/sync`: anonymous auth + journey hydrate/upsert — Phase 3 complete |
 | 2026-07-18 | `db/client`: Supabase browser client |
 | 2026-07-18 | `db/schema`: `journeys` table + RLS on Supabase |
 | 2026-07-18 | `frontend/gaze-optional`: MediaPipe gaze/hand — Phase 2 complete |

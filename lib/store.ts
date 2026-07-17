@@ -24,6 +24,8 @@ type State = {
   journey: Journey | null;
   status: Status;
   error: string | null;
+  /** Supabase journeys.id when synced remotely */
+  remoteJourneyId: string | null;
 };
 
 type Actions = {
@@ -42,9 +44,16 @@ type Actions = {
   reset: () => void;
   /** Fix status after refresh — only persist journey, not transient UI status. */
   reconcileAfterHydration: () => void;
+  /** Replace journey from Supabase when remote is richer than local. */
+  hydrateFromRemote: (journey: Journey, remoteId: string) => void;
 };
 
-const initial: State = { journey: null, status: "idle", error: null };
+const initial: State = {
+  journey: null,
+  status: "idle",
+  error: null,
+  remoteJourneyId: null,
+};
 
 function layerAtCurrentIndex(j: Journey): LayerProgress | undefined {
   return j.layers.find((p) => p.layer.index === j.currentIndex);
@@ -67,6 +76,7 @@ export const useJourney = create<State & Actions>()(
             layers: [],
             usedPlacement: placement,
           },
+          remoteJourneyId: null,
           status: placement ? "placement-loading" : "loading",
           error: null,
         });
@@ -171,7 +181,7 @@ export const useJourney = create<State & Actions>()(
         }),
 
       reset: () => {
-        set(initial);
+        set({ ...initial });
         // Also clear persisted blob.
         if (typeof window !== "undefined") {
           try {
@@ -179,6 +189,27 @@ export const useJourney = create<State & Actions>()(
           } catch {}
         }
       },
+
+      hydrateFromRemote: (journey, remoteId) =>
+        set(() => {
+          const prog = journey.layers.find(
+            (p) => p.layer.index === journey.currentIndex,
+          );
+          let status: Status = "idle";
+          if (!prog) {
+            status = journey.usedPlacement ? "placement-loading" : "loading";
+          } else if (prog.passedAt) {
+            status = "passed";
+          } else {
+            status = "reading";
+          }
+          return {
+            journey,
+            remoteJourneyId: remoteId,
+            status,
+            error: null,
+          };
+        }),
 
       reconcileAfterHydration: () =>
         set((s) => {
@@ -216,12 +247,19 @@ export const useJourney = create<State & Actions>()(
       name: "noesis:journey",
       storage: createJSONStorage(() => localStorage),
       // Transient statuses (loading, placement) are not persisted — avoids refresh loops.
-      partialize: (s) => ({ journey: s.journey }),
+      partialize: (s) => ({
+        journey: s.journey,
+        remoteJourneyId: s.remoteJourneyId,
+      }),
       merge: (persisted, current) => {
-        const p = persisted as { journey?: Journey | null } | undefined;
+        const p = persisted as {
+          journey?: Journey | null;
+          remoteJourneyId?: string | null;
+        } | undefined;
         return {
           ...current,
           journey: p?.journey ?? null,
+          remoteJourneyId: p?.remoteJourneyId ?? null,
           status: "idle",
           error: null,
         };
