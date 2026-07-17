@@ -21,6 +21,7 @@ import { GazeCameraSink } from "./GazeCameraSink";
 import { LensTarget } from "./LensTarget";
 import { GazeToggle } from "./GazeToggle";
 import { ThemeToggle } from "./ThemeToggle";
+import { AuthButton } from "./AuthButton";
 import { useGazeCamera } from "@/hooks/useGazeCamera";
 import { gazeIsActive, useGaze } from "@/lib/gaze-store";
 import { startJourneySync } from "@/lib/journey-sync";
@@ -568,6 +569,7 @@ export function Noesis() {
   return (
     <div className="app-shell">
       <div className="top-controls">
+        <AuthButton />
         <GazeToggle />
         <ThemeToggle />
       </div>

@@ -170,7 +170,7 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 **Done:** Phase 0–3 on `main` (docs, backend, frontend, database sync).
 
-**Now / next:** `auth/session` merged → `auth/ui`.
+**Now / next:** `auth/ui` merged → `auth/upgrade`.
 
 **Open:** LLM keys on Vercel if not already; local `.env` / `.env.local` for Anthropic or OpenAI.
 

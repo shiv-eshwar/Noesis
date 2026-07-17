@@ -147,6 +147,7 @@ Exercise each `POST /api/*` route before building UI.
 | 2026-07-18 | Infra: GitHub, Vercel, Supabase for Noesis |
 | 2026-07-18 | Docs: `README.md`, `WHAT-THIS-IS.md`, `engineeringprogress.md`, `BUILT.md` |
 | 2026-07-18 | Default branch renamed `master` → `main`; locked Phase 1 decisions recorded |
+| 2026-07-18 | `auth/ui`: AuthButton + AuthModal in top-controls |
 | 2026-07-18 | `auth/session`: auth helpers + session-aware journey sync |
 | 2026-07-18 | `db/sync`: anonymous auth + journey hydrate/upsert — Phase 3 complete |
 | 2026-07-18 | `db/client`: Supabase browser client |
