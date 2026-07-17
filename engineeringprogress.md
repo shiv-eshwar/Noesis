@@ -67,7 +67,7 @@ Work **one branch at a time**, then merge to `main` and push.
 |-------|--------|-------|-----------|--------|
 | 1 | `backend/foundation` | Next app shell + `lib/types`, `depth`, `llm`, `prompts` (Noesis) | `npm run build` green | ✅ |
 | 2 | `backend/api-layer` | `POST /api/layer` + quiz normalize/policy | curl returns `Layer` | ✅ |
-| 3 | `backend/api-revise` | `POST /api/layer/revise` | curl revises layer | ⬜ |
+| 3 | `backend/api-revise` | `POST /api/layer/revise` | curl revises layer | ✅ |
 | 4 | `backend/api-placement` | `POST /api/placement` + `placement-parse` | curl returns questions | ⬜ |
 | 5 | `backend/api-quiz` | `POST /api/quiz` + grading libs | curl grades items | ⬜ |
 | 6 | `backend/api-chat` | `POST /api/chat` | curl returns chat reply | ⬜ |
@@ -79,7 +79,7 @@ Work **one branch at a time**, then merge to `main` and push.
 - [x] Port `lib/llm.ts`, `lib/prompts.ts` (brand voice → Noesis)
 - [x] Port quiz helpers used by APIs (`quiz-normalize`, `quiz-policy` for layer)
 - [x] `POST /api/layer`
-- [ ] `POST /api/layer/revise`
+- [x] `POST /api/layer/revise`
 - [ ] `POST /api/placement` (+ parse as in reference)
 - [ ] `POST /api/quiz`
 - [ ] `POST /api/chat`
@@ -140,7 +140,7 @@ Consume backend contracts only. Rename orchestrator to Noesis.
 
 ## Latest focus
 
-**Now:** `backend/api-layer` merged → next `backend/api-revise`.
+**Now:** `backend/api-revise` merged → next `backend/api-placement`.
 
 **Do not start:** Frontend UI, database migrations, or auth until Phase 1 backend contracts are merged and smoke-tested.
 
