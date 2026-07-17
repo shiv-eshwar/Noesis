@@ -1,0 +1,199 @@
+# Noesis
+
+**Learn anything. One page. Deeply.**
+
+Noesis is a single-surface learning experience. Enter a topic. Read the simplest true explanation. Prove you understand it. The same page evolves in place — same story, richer fidelity — until understanding actually sticks.
+
+No course catalog. No sidebar. No gamification theater. One calm page that matures with you.
+
+> The whole point: simplify first, deepen with intention, repeat the topic at rising fidelity, and earn the next layer with questions.
+
+---
+
+## Why Noesis
+
+Topics feel enormous until you see their spine. Rockets are not magic — fuel, a body, and something that pushes exhaust out. Once that lands, everything else has somewhere to attach.
+
+Noesis teaches that way on purpose:
+
+1. Start with the simplest true version  
+2. Add complexity only after you show you understand  
+3. Stay on one topic — spiral deeper, with occasional top-down checkpoints  
+4. Quiz before you go deeper — active recall, not passive reading  
+
+**Success criterion:** someone learns *Rockets* (or anything else) in one sitting and thinks:
+
+> That was calm. Beautiful. And I actually understand more than when I started.
+
+---
+
+## Current status
+
+| Layer | Status |
+|-------|--------|
+| Product docs | ✅ Ready |
+| GitHub · Vercel · Supabase | ✅ Provisioned |
+| Backend (API + LLM) | 🚧 Next |
+| Frontend (reader UI) | ⬜ After backend |
+| Database · Auth | ⬜ After the core loop |
+
+Living docs (read these):
+
+| Doc | Purpose |
+|-----|---------|
+| [`WHAT-THIS-IS.md`](./WHAT-THIS-IS.md) | Product law — philosophy, UX, architecture |
+| [`engineeringprogress.md`](./engineeringprogress.md) | Phases, branch plan, todos |
+| [`BUILT.md`](./BUILT.md) | What actually exists right now |
+
+---
+
+## How it works
+
+```text
+Topic → Layer (ELI5) → Read → Quiz → Pass → Deeper layer → …
+                              └─ Fail → Rewrite this layer → Retry
+```
+
+Optional: *I already know some* → placement quiz → start further along the depth rail.
+
+Behind the page:
+
+| Concern | Responsibility |
+|---------|----------------|
+| **Backend** | Generate layers, placement, quiz grading, chat |
+| **Frontend** | One editorial surface — landing, reader, quiz, motion |
+| **Database** | Persist journeys across devices (Supabase) |
+| **Auth** | Accounts when persistence needs identity |
+
+We build in that order. Docs first. One branch at a time. Reproduce the reference — don’t invent parallel APIs.
+
+---
+
+## The learning model
+
+| Beat | What happens |
+|------|----------------|
+| **ELI5 entry** | Vivid, zero jargon — the gift of maximum simplicity, once |
+| **Ordinary layers** | One new slice only — same story, forward motion |
+| **Checkpoints** | Every few layers: top-down map at your current level |
+| **Quiz gate** | Understanding unlocks depth; fail rewrites the layer |
+| **Late climb** | Synthesis → scholar → frontier — still one voice |
+
+The system prompt is the product. Voice, banned clichés, spiral rules, and JSON shape live there — treat them as sacred.
+
+---
+
+## Design principles
+
+- **One beautiful column** — centered, editorial, calm  
+- **Serif-led reading** — the page is meant to be *read*  
+- **Whitespace is structure** — not emptiness to fill with widgets  
+- **Motion serves comprehension** — never startup-demo energy  
+- **No XP explosions** — progress is quiet and elegant  
+- **Camera is optional** — the product must feel complete with a button  
+
+---
+
+## Tech stack
+
+| Piece | Choice |
+|-------|--------|
+| App | Next.js (App Router) · React · TypeScript |
+| Style | Tailwind CSS · paper & ink tokens |
+| Motion | `motion/react` |
+| Client state | Zustand · localStorage (v1) |
+| LLM | Anthropic (preferred) · OpenAI fallback |
+| Hosting | [Vercel](https://vercel.com) · project `noesis` |
+| Data / auth (later) | [Supabase](https://supabase.com) · project **Noesis** |
+
+Repo: [github.com/shiv-eshwar/Noesis](https://github.com/shiv-eshwar/Noesis)
+
+---
+
+## Getting started
+
+Application code is landing next (backend first). When the app is in the repo:
+
+### 1. Install
+
+```bash
+npm install
+```
+
+### 2. Environment
+
+Create `.env.local` (never commit secrets):
+
+```bash
+# Required for generation — either key is enough (Anthropic preferred)
+ANTHROPIC_API_KEY=sk-ant-...
+# OPENAI_API_KEY=sk-...
+
+# Supabase (already provisioned for later persistence)
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+# SUPABASE_SERVICE_ROLE_KEY=...   # server only
+```
+
+### 3. Develop
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+### 4. Backend smoke tests (Phase 1)
+
+Exercise the API contracts before UI:
+
+| Route | Role |
+|-------|------|
+| `POST /api/layer` | Generate a layer |
+| `POST /api/layer/revise` | Rewrite after quiz fail |
+| `POST /api/placement` | Placement questions |
+| `POST /api/quiz` | Grade short answers |
+| `POST /api/chat` | Anchored Q&A |
+
+---
+
+## Project shape (target)
+
+```text
+Noesis/
+├── app/
+│   ├── api/                 # Backend — layer, revise, placement, quiz, chat
+│   ├── layout.tsx
+│   ├── page.tsx             # Frontend entry
+│   └── globals.css
+├── components/              # Reader, quiz, landing, shell (Phase 2)
+├── lib/                     # llm, prompts, depth, types, stores
+├── WHAT-THIS-IS.md          # Product law
+├── engineeringprogress.md   # Branch plan & todos
+├── BUILT.md                 # Honest inventory
+└── README.md                # You are here
+```
+
+---
+
+## Contributing workflow
+
+1. Read `WHAT-THIS-IS.md` — do not compromise the soul  
+2. Check `engineeringprogress.md` — pick the next open branch  
+3. One concern per branch · merge when green · update `BUILT.md`  
+4. Prefer reproducing the reference over inventing new surfaces  
+
+**Branch order (backend):**  
+`backend/foundation` → `api-layer` → `api-revise` → `api-placement` → `api-quiz` → `api-chat`
+
+---
+
+## License & intent
+
+Private / product development under [shiv-eshwar/Noesis](https://github.com/shiv-eshwar/Noesis).
+
+Noesis is a personal adaptive learning notebook disguised as one immaculate page: one topic, one voice, one surface that grows up with you.
+
+---
+
+*Simplify first. Deepen with intention. Earn the next layer.*
