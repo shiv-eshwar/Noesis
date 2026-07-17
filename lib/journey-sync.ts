@@ -1,5 +1,6 @@
 "use client";
 
+import { ensureSession } from "@/lib/auth";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import type { JourneyRow } from "@/lib/supabase/types";
 import { useJourney } from "@/lib/store";
@@ -29,19 +30,10 @@ function journeyRicher(a: Journey, b: Journey | null): boolean {
   return a.createdAt >= b.createdAt;
 }
 
+/** @deprecated use ensureSession — kept name for call sites */
 export async function ensureAnonSession(): Promise<string | null> {
-  const supabase = getSupabaseBrowserClient();
-  if (!supabase) return null;
-
-  const { data: existing } = await supabase.auth.getSession();
-  if (existing.session?.user?.id) return existing.session.user.id;
-
-  const { data, error } = await supabase.auth.signInAnonymously();
-  if (error) {
-    console.warn("[noesis] anonymous sign-in failed", error.message);
-    return null;
-  }
-  return data.user?.id ?? null;
+  const user = await ensureSession();
+  return user?.id ?? null;
 }
 
 async function fetchLatestRow(): Promise<JourneyRow | null> {
@@ -139,20 +131,42 @@ function schedulePush(journey: Journey | null): void {
   }, DEBOUNCE_MS);
 }
 
-/** Start anonymous session, hydrate from Supabase, subscribe to store changes. */
+/** Re-fetch remote journey for the current session user (after auth changes). */
+export async function refreshJourneyFromRemote(): Promise<void> {
+  const user = await ensureSession();
+  if (!user) return;
+
+  const row = await fetchLatestRow();
+  if (!row) {
+    remoteId = null;
+    return;
+  }
+
+  remoteId = row.id;
+  const remote = rowToJourney(row);
+  const local = useJourney.getState().journey;
+  if (journeyRicher(remote, local)) {
+    useJourney.getState().hydrateFromRemote(remote, row.id);
+  } else {
+    useJourney.setState({ remoteJourneyId: row.id });
+    if (local) schedulePush(local);
+  }
+}
+
+/** Start session (anon if needed), hydrate from Supabase, subscribe to store + auth. */
 export function startJourneySync(): () => void {
   if (typeof window === "undefined") return () => {};
   if (syncStarted) return () => {};
   syncStarted = true;
 
-  let unsub: (() => void) | undefined;
+  let unsubJourney: (() => void) | undefined;
+  let unsubAuth: { subscription: { unsubscribe: () => void } } | undefined;
   let cancelled = false;
 
   void (async () => {
-    await ensureAnonSession();
+    await ensureSession();
     if (cancelled) return;
 
-    // Wait for localStorage rehydrate so we can compare.
     if (!useJourney.persist.hasHydrated()) {
       await new Promise<void>((resolve) => {
         const done = useJourney.persist.onFinishHydration(() => resolve());
@@ -164,32 +178,45 @@ export function startJourneySync(): () => void {
     }
     if (cancelled) return;
 
-    const row = await fetchLatestRow();
+    await refreshJourneyFromRemote();
     if (cancelled) return;
 
-    if (row) {
-      remoteId = row.id;
-      const remote = rowToJourney(row);
-      const local = useJourney.getState().journey;
-      if (journeyRicher(remote, local)) {
-        useJourney.getState().hydrateFromRemote(remote, row.id);
-      } else {
-        useJourney.setState({ remoteJourneyId: row.id });
-        if (local) schedulePush(local);
-      }
-    }
-
-    unsub = useJourney.subscribe((state, prev) => {
+    unsubJourney = useJourney.subscribe((state, prev) => {
       remoteId = state.remoteJourneyId;
       if (state.journey === prev.journey) return;
       schedulePush(state.journey);
     });
+
+    const supabase = getSupabaseBrowserClient();
+    if (supabase) {
+      const { data } = supabase.auth.onAuthStateChange((event) => {
+        if (
+          event === "SIGNED_IN" ||
+          event === "SIGNED_OUT" ||
+          event === "USER_UPDATED" ||
+          event === "TOKEN_REFRESHED"
+        ) {
+          if (event === "SIGNED_OUT") {
+            remoteId = null;
+            useJourney.setState({ remoteJourneyId: null });
+          }
+          void (async () => {
+            if (event === "SIGNED_OUT") {
+              await ensureSession();
+            }
+            await refreshJourneyFromRemote();
+          })();
+        }
+      });
+      unsubAuth = data;
+    }
   })();
 
   return () => {
     cancelled = true;
     syncStarted = false;
-    unsub?.();
+    unsubJourney?.();
+    unsubAuth?.subscription.unsubscribe();
     if (debounceTimer) clearTimeout(debounceTimer);
   };
 }

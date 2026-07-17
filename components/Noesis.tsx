@@ -24,6 +24,7 @@ import { ThemeToggle } from "./ThemeToggle";
 import { useGazeCamera } from "@/hooks/useGazeCamera";
 import { gazeIsActive, useGaze } from "@/lib/gaze-store";
 import { startJourneySync } from "@/lib/journey-sync";
+import { useAuth } from "@/lib/auth-store";
 
 const DISSOLVE_MS = 650;
 
@@ -80,7 +81,8 @@ export function Noesis() {
     return useJourney.persist.onFinishHydration(run);
   }, [reconcileAfterHydration]);
 
-  // Supabase anonymous session + journey hydrate/upsert (soft-fail).
+  // Auth session listener + Supabase journey hydrate/upsert (soft-fail).
+  useEffect(() => useAuth.getState().init(), []);
   useEffect(() => startJourneySync(), []);
 
   // Recover from stuck UI: placement modal open in store but questions lost in memory.
