@@ -119,7 +119,7 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 | Order | Branch | Scope | Status |
 |-------|--------|-------|--------|
-| 1 | `frontend/shell` | Layout, fonts, globals, theme, landing | ⬜ |
+| 1 | `frontend/shell` | Layout, fonts, globals, theme, landing | ✅ |
 | 2 | `frontend/journey` | Zustand journey store + orchestrator | ⬜ |
 | 3 | `frontend/reader-quiz` | Reader, quiz modal, depth rail, revise flow | ⬜ |
 | 4 | `frontend/placement-chat` | Placement + questions panel + selection | ⬜ |
@@ -127,7 +127,7 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 ### Frontend todos
 
-- [ ] Landing + topic start
+- [x] Landing + topic start
 - [ ] Loading / reading / quiz / passed / done states
 - [ ] Depth rail + text evolution motion
 - [ ] Placement path
@@ -157,7 +157,7 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 **Done:** Phase 0 docs + Phase 1 backend — all five APIs on `main` (Next.js).
 
-**Now / next:** Phase 2 frontend (`frontend/shell` first), after LLM keys are added for real generation smoke tests.
+**Now / next:** `frontend/shell` merged → `frontend/journey`.
 
 **Open blocker:** No `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` in `.env.local` or Vercel yet — routes return the expected missing-key error until keys are set.
 
@@ -172,4 +172,4 @@ Consume backend contracts only. Orchestrator branded **Noesis**.
 
 ---
 
-*Last updated: 2026-07-18 — Phase 1 backend complete; Phase 2 next.*
+*Last updated: 2026-07-18 — frontend/shell landed.*
