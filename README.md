@@ -36,7 +36,7 @@ Noesis teaches that way on purpose:
 | Backend (API + LLM) | ✅ All five routes on `main` |
 | Frontend (reader UI) | ✅ Full learning surface |
 | Database · Auth | ✅ Journeys sync + optional email |
-| LLM keys | 🟡 Local `OPENAI_API_KEY` set; OpenAI quota/billing blocking generation; not on Vercel yet |
+| LLM keys | ✅ Local + Vercel `OPENAI_API_KEY` |
 
 Living docs (read these):
 
@@ -141,7 +141,8 @@ Sign-in is optional. Learning works anonymously. Email magic link upgrades the a
 | URL | Role |
 |-----|------|
 | `http://localhost:3000` | Local Site / redirect |
-| `https://noesis-shiv-shahs-projects.vercel.app` | Production Site URL + redirect |
+| `https://noesis-beryl.vercel.app` | Production Site URL + redirect |
+| `https://noesis-shiv-shahs-projects.vercel.app` | Production alias |
 | Preview `*.vercel.app` hosts | Allow-listed for PR previews |
 
 ### 3. Develop

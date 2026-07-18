@@ -22,8 +22,8 @@ A single, serif-led page that teaches one topic at a time, deepening as you prov
 | Vercel | ✅ | Project `noesis`, GitHub connected; deploys from `main` |
 | Supabase | ✅ | Project `Noesis` (`ebtayigvsooxoqizjmsf`, Mumbai) |
 | Local env | ✅ | `.env.local` with Supabase + `OPENAI_API_KEY` (gitignored) |
-| Vercel env | 🟡 | Supabase set; LLM keys not on Vercel yet |
-| LLM keys | 🟡 | Local OpenAI key set; live generation can hit provider `429` quota |
+| Vercel env | ✅ | Supabase + `OPENAI_API_KEY` (all environments) |
+| LLM keys | ✅ | Local + Vercel `OPENAI_API_KEY` (sensitive on Production/Preview) |
 
 ### Documentation
 
@@ -138,9 +138,10 @@ Open [http://localhost:3000](http://localhost:3000).
 |--------|--------|
 | Vercel project | ✅ Deploying from `main` |
 | GitHub → Vercel | Connected; production branch: `main` |
-| Production LLM | ⬜ Add `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` on Vercel |
+| Production LLM | ✅ `OPENAI_API_KEY` on Vercel |
 
-Production URL: https://noesis-shiv-shahs-projects.vercel.app
+Production URL: https://noesis-beryl.vercel.app  
+Aliases: https://noesis-shiv-shahs-projects.vercel.app
 
 ---
 
@@ -148,6 +149,7 @@ Production URL: https://noesis-shiv-shahs-projects.vercel.app
 
 | Date | What landed |
 |------|-------------|
+| 2026-07-18 | Production live: OPENAI_API_KEY on Vercel; public URL https://noesis-beryl.vercel.app |
 | 2026-07-18 | Ship readiness: docs synced to Phase 0–4 complete; build verified |
 | 2026-07-18 | Infra: GitHub, Vercel, Supabase for Noesis |
 | 2026-07-18 | Docs: `README.md`, `WHAT-THIS-IS.md`, `engineeringprogress.md`, `BUILT.md` |
