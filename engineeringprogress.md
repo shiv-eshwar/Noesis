@@ -41,9 +41,9 @@ Source of product truth: `WHAT-THIS-IS.md`. Source of “what exists”: `BUILT.
 | Local folder linked | ✅ | `.vercel/`, supabase link, git `origin` |
 | Default branch `main` | ✅ | Was `master`; aligned with Vercel |
 | `.env.example` tracked | ✅ | Secrets stay gitignored via `.env*` + `!.env.example` |
-| LLM keys in `.env.local` | ⬜ | Need `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` for full generation |
+| LLM keys in `.env.local` | ✅ | `OPENAI_API_KEY` set (OpenAI returned 429 quota on live smoke — billing/quota) |
 | Supabase journeys + anon auth | ✅ | Table + RLS; anon + email magic-link upgrade |
-| LLM keys on Vercel | ⬜ | Add before production smoke tests |
+| LLM keys on Vercel | ⬜ | Not set — add before production generation |
 
 ---
 
@@ -91,7 +91,9 @@ Reproduce server surface from the reference. **No product UI.** Merged to `main`
 - [x] Local smoke tests (curl): validation, missing-key path; `/api/quiz` local grading OK
 - [x] `.env.example` for LLM setup
 - [x] Update `BUILT.md` after merges
-- [ ] Add LLM keys to `.env.local` + Vercel (unblocks full Layer generation)
+- [x] Add LLM key to `.env.local` (`OPENAI_API_KEY`)
+- [ ] Add LLM key to Vercel (unblocks production generation)
+- [ ] Clear OpenAI quota/billing so live `/api/layer` succeeds (currently 429)
 
 ### Routes live on `main`
 
@@ -180,11 +182,19 @@ Optional email magic link. Anonymous learning still works without signing in.
 
 ## Latest focus
 
-**Done:** Phase 0–4 on `main` (docs, backend, frontend, database, optional auth).
+**Done:** Phase 0–4 on `main` — full reference-parity app (docs, five APIs, UI, journeys, optional auth). Ship-readiness docs synced; `npm run build` green.
 
-**Now / next:** Product polish / LLM keys for full generation smoke tests.
+**Now / next:** Manual test locally (`npm run dev`); fix OpenAI quota or add Anthropic when you want live generation; add LLM key on Vercel for production.
 
-**Open:** LLM keys on Vercel if not already; local `.env` / `.env.local` for Anthropic or OpenAI.
+### Manual test checklist
+
+1. `npm run dev` → http://localhost:3000
+2. Landing loads; theme toggle works
+3. Start a topic — generation needs a working LLM key (503 = missing key; 429 = provider quota — not missing UI)
+4. When LLM works: quiz pass → next layer; fail → revise; placement; text-selection questions
+5. Anonymous learning works without Sign in
+
+**Open (ops, not code gaps):** OpenAI `429` quota locally; no LLM key on Vercel yet.
 
 ---
 
@@ -194,8 +204,9 @@ Optional email magic link. Anonymous learning still works without signing in.
 - Brand: **Noesis** everywhere user-facing; Vercel project name remains `noesis`.
 - Keep this file honest: check boxes only when merged and verified.
 - **After every completed task or branch merge:** update this file and `BUILT.md`.
+- Do **not** rebuild Phase 1–2 from scratch — parity is already on `main`.
 
 ---
 
-*Last updated: 2026-07-18 — Phase 4 auth complete.*
+*Last updated: 2026-07-18 — ship readiness (docs + build verify).*
 

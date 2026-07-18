@@ -19,22 +19,22 @@ A single, serif-led page that teaches one topic at a time, deepening as you prov
 | Piece | Status | Detail |
 |-------|--------|--------|
 | GitHub | ✅ | https://github.com/shiv-eshwar/Noesis |
-| Vercel | ✅ | Project `noesis`, GitHub connected |
+| Vercel | ✅ | Project `noesis`, GitHub connected; deploys from `main` |
 | Supabase | ✅ | Project `Noesis` (`ebtayigvsooxoqizjmsf`, Mumbai) |
-| Local env | ✅ | `.env.local` with Supabase URL/keys/DB password (gitignored) |
-| Vercel env | ✅ | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` (all envs) |
-| LLM keys | ⬜ | Not yet configured for generation |
+| Local env | ✅ | `.env.local` with Supabase + `OPENAI_API_KEY` (gitignored) |
+| Vercel env | 🟡 | Supabase set; LLM keys not on Vercel yet |
+| LLM keys | 🟡 | Local OpenAI key set; live generation can hit provider `429` quota |
 
 ### Documentation
 
 | File | Status | Role |
 |------|--------|------|
-| `README.md` | ✅ | Public face of the repo — product, status, workflow |
+| `README.md` | ✅ | Public face of the repo — product, status, how to run |
 | `WHAT-THIS-IS.md` | ✅ | Living product spec & philosophy |
-| `engineeringprogress.md` | ✅ | Phases, branch plan, todos |
+| `engineeringprogress.md` | ✅ | Phases, todos, latest focus |
 | `BUILT.md` | ✅ | This file — inventory of what exists |
 
-### Application code
+### Application code (Phases 0–4)
 
 | Slice | Status |
 |-------|--------|
@@ -45,13 +45,15 @@ A single, serif-led page that teaches one topic at a time, deepening as you prov
 | Database schema | ✅ `journeys` + RLS + client sync |
 | Auth | ✅ Optional email magic link (anon upgrade in place) |
 
+`npm run build` green with `/`, `/api/layer`, `/api/layer/revise`, `/api/placement`, `/api/quiz`, `/api/chat`.
+
 ---
 
-## Target architecture (reference — not all built yet)
+## Architecture (built)
 
 Faithful to the reference implementation, branded Noesis.
 
-### Backend (Phase 1)
+### Backend
 
 | File / route | Role |
 |--------------|------|
@@ -65,27 +67,29 @@ Faithful to the reference implementation, branded Noesis.
 | `lib/depth.ts` | Depth rail / layer kinds |
 | `lib/types.ts` | Shared types |
 
-### Frontend (Phase 2)
+### Frontend
 
 | File | Role |
 |------|------|
-| `app/page.tsx` | Entry — mounts Noesis shell |
-| Orchestrator component | State flow + layer fetching |
+| `app/page.tsx` | Entry — mounts `Noesis` shell |
+| `components/Noesis.tsx` | Orchestrator — state flow + layer fetching |
 | `Landing` | Topic input + suggestions |
 | `Reader` | Layer display + motion |
 | `Quiz` / modals | Active recall gate |
-| Zustand store | Journey + localStorage |
+| Placement + Questions panel | Optional start depth + selection Q&A |
+| Zustand store | Journey + `noesis:journey` localStorage |
 
-### Database & auth (Phases 3–4)
+### Database & auth
 
 | Piece | Role |
 |-------|------|
-| Supabase | Persist journeys across devices |
-| Auth | Identity when persistence needs it |
+| Supabase `journeys` | Persist journeys across devices (RLS by `auth.uid()`) |
+| Anonymous session | Default — learning works without Sign in |
+| Email magic link | Optional upgrade in place (same user id) |
 
 ---
 
-## The flow (product — when app exists)
+## The flow
 
 1. **Landing** — topic input + suggestions (+ optional placement)
 2. **Loading** — fetch layer from backend
@@ -96,27 +100,19 @@ Faithful to the reference implementation, branded Noesis.
 
 ---
 
-## Why the backend comes first
+## To run
 
-- The **prompt + API contracts** are the product’s brain.
-- Frontend should only consume stable JSON shapes.
-- Database and auth amplify the loop; they must not delay it.
-
----
-
-## To run (once backend lands)
-
-### 1. API keys in `.env.local`
+### 1. Keys in `.env.local`
 
 ```bash
-# Either (preferred):
+# Either (preferred when available):
 ANTHROPIC_API_KEY=sk-ant-...
 
 # Or:
 OPENAI_API_KEY=sk-...
 ```
 
-Supabase keys are already present for later phases.
+Supabase keys are already configured for this project. Put LLM keys in **`.env.local`** (not the empty `.env` stub).
 
 ### 2. Dev server
 
@@ -125,9 +121,14 @@ npm install
 npm run dev
 ```
 
-### 3. Smoke-test backend
+Open [http://localhost:3000](http://localhost:3000).
 
-Exercise each `POST /api/*` route before building UI.
+### 3. Manual test checklist
+
+1. Landing loads; theme toggle works
+2. Start a topic — layer generation needs a working LLM key (503 = missing key; 429 = provider quota)
+3. When generation works: quiz pass → next layer; fail → revise; optional placement; select text for questions
+4. Anonymous learning works without Sign in
 
 ---
 
@@ -136,7 +137,10 @@ Exercise each `POST /api/*` route before building UI.
 | Target | Status |
 |--------|--------|
 | Vercel project | ✅ Deploying from `main` |
-| GitHub → Vercel | Connected; production branch expected: `main` |
+| GitHub → Vercel | Connected; production branch: `main` |
+| Production LLM | ⬜ Add `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` on Vercel |
+
+Production URL: https://noesis-shiv-shahs-projects.vercel.app
 
 ---
 
@@ -144,6 +148,7 @@ Exercise each `POST /api/*` route before building UI.
 
 | Date | What landed |
 |------|-------------|
+| 2026-07-18 | Ship readiness: docs synced to Phase 0–4 complete; build verified |
 | 2026-07-18 | Infra: GitHub, Vercel, Supabase for Noesis |
 | 2026-07-18 | Docs: `README.md`, `WHAT-THIS-IS.md`, `engineeringprogress.md`, `BUILT.md` |
 | 2026-07-18 | Default branch renamed `master` → `main`; locked Phase 1 decisions recorded |

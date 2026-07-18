@@ -33,9 +33,10 @@ Noesis teaches that way on purpose:
 |-------|--------|
 | Product docs | ✅ Ready |
 | GitHub · Vercel · Supabase | ✅ Provisioned |
-| Backend (API + LLM) | 🚧 Next |
-| Frontend (reader UI) | ⬜ After backend |
-| Database · Auth | ⬜ After the core loop |
+| Backend (API + LLM) | ✅ All five routes on `main` |
+| Frontend (reader UI) | ✅ Full learning surface |
+| Database · Auth | ✅ Journeys sync + optional email |
+| LLM keys | 🟡 Local `OPENAI_API_KEY` set; OpenAI quota/billing blocking generation; not on Vercel yet |
 
 Living docs (read these):
 
@@ -63,9 +64,9 @@ Behind the page:
 | **Backend** | Generate layers, placement, quiz grading, chat |
 | **Frontend** | One editorial surface — landing, reader, quiz, motion |
 | **Database** | Persist journeys across devices (Supabase) |
-| **Auth** | Accounts when persistence needs identity |
+| **Auth** | Optional — email magic link upgrades anonymous sessions |
 
-We build in that order. Docs first. One branch at a time. Reproduce the reference — don’t invent parallel APIs.
+Phases 0–4 are complete on `main`. Prefer reproducing the reference over inventing new surfaces.
 
 ---
 
@@ -112,8 +113,6 @@ Repo: [github.com/shiv-eshwar/Noesis](https://github.com/shiv-eshwar/Noesis)
 
 ## Getting started
 
-Application code is landing next (backend first). When the app is in the repo:
-
 ### 1. Install
 
 ```bash
@@ -122,14 +121,14 @@ npm install
 
 ### 2. Environment
 
-Create `.env.local` (never commit secrets):
+Put secrets in **`.env.local`** (not the empty `.env` stub — Next.js reads `.env.local` for local dev). Never commit secrets.
 
 ```bash
-# Required for generation — either key is enough (Anthropic preferred)
-ANTHROPIC_API_KEY=sk-ant-...
+# Required for generation — either key is enough (Anthropic preferred when both set)
 # OPENAI_API_KEY=sk-...
+# ANTHROPIC_API_KEY=sk-ant-...
 
-# Supabase (journey persistence + optional email magic link)
+# Supabase (already set for this project if you pulled env earlier)
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 # SUPABASE_SERVICE_ROLE_KEY=...   # server only
@@ -153,9 +152,15 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-### 4. Backend smoke tests (Phase 1)
+### 4. Manual test checklist
 
-Exercise the API contracts before UI:
+1. `npm run dev` → [http://localhost:3000](http://localhost:3000)
+2. Landing loads; theme toggle works
+3. Start a topic — layer generation needs a working LLM key (503 = missing key; 429 = provider quota — not a missing UI)
+4. When generation works: quiz pass → next layer; quiz fail → revise; optional placement; select text for questions
+5. Learning works without Sign in (anonymous session)
+
+### 5. API surface
 
 | Route | Role |
 |-------|------|
@@ -167,19 +172,19 @@ Exercise the API contracts before UI:
 
 ---
 
-## Project shape (target)
+## Project shape
 
 ```text
 Noesis/
 ├── app/
-│   ├── api/                 # Backend — layer, revise, placement, quiz, chat
+│   ├── api/                 # layer, revise, placement, quiz, chat
 │   ├── layout.tsx
-│   ├── page.tsx             # Frontend entry
+│   ├── page.tsx             # mounts <Noesis />
 │   └── globals.css
-├── components/              # Reader, quiz, landing, shell (Phase 2)
-├── lib/                     # llm, prompts, depth, types, stores
+├── components/              # Landing, Reader, Quiz, Placement, gaze, auth
+├── lib/                     # llm, prompts, depth, stores, journey-sync
 ├── WHAT-THIS-IS.md          # Product law
-├── engineeringprogress.md   # Branch plan & todos
+├── engineeringprogress.md   # Phases & todos
 ├── BUILT.md                 # Honest inventory
 └── README.md                # You are here
 ```
@@ -189,12 +194,9 @@ Noesis/
 ## Contributing workflow
 
 1. Read `WHAT-THIS-IS.md` — do not compromise the soul  
-2. Check `engineeringprogress.md` — pick the next open branch  
+2. Check `engineeringprogress.md` — pick the next open item  
 3. One concern per branch · merge when green · update `BUILT.md`  
-4. Prefer reproducing the reference over inventing new surfaces  
-
-**Branch order (backend):**  
-`backend/foundation` → `api-layer` → `api-revise` → `api-placement` → `api-quiz` → `api-chat`
+4. Prefer reproducing the reference over inventing new surfaces
 
 ---
 
