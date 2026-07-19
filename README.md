@@ -2,7 +2,9 @@
 
 **Learn anything. One page. Deeply.**
 
-![Noesis landing — topic input and suggestions](./docs/noesis-landing.png)
+<p align="center">
+  <img src="./docs/noesis-landing.png" alt="Noesis landing — topic input and suggestions" width="720" />
+</p>
 
 Noesis is a single-surface learning experience. Enter a topic. Read the simplest true explanation. Prove you understand it. The same page evolves in place — same story, richer fidelity — until understanding actually sticks.
 
