@@ -2,6 +2,8 @@
 
 **Learn anything. One page. Deeply.**
 
+![Noesis landing — topic input and suggestions](./docs/noesis-landing.png)
+
 Noesis is a single-surface learning experience. Enter a topic. Read the simplest true explanation. Prove you understand it. The same page evolves in place — same story, richer fidelity — until understanding actually sticks.
 
 No course catalog. No sidebar. No gamification theater. One calm page that matures with you.
